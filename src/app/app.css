@@ -23,7 +23,7 @@
   font-size: 2.5rem;
   line-height: 1;
   margin-bottom: -15px;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
 }
 
 .shield {
@@ -31,7 +31,7 @@
   border: 4px solid var(--accent-gold);
   padding: 20px 40px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(251,191,36,0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(251, 191, 36, 0.3);
 }
 
 .huge-score {
@@ -40,7 +40,7 @@
   color: var(--accent-gold);
   margin: 0;
   line-height: 1;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-family: 'Impact', 'Outfit', sans-serif;
   letter-spacing: -2px;
 }
@@ -98,8 +98,8 @@
 
 .diff-btn {
   flex: 1;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 15px;
   border-radius: 8px;
   display: flex;
@@ -171,7 +171,7 @@
 }
 
 .dark-outline {
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   border-color: transparent;
 }
 
@@ -187,6 +187,7 @@
 .rule-block {
   margin-bottom: 20px;
 }
+
 .rule-block:last-child {
   margin-bottom: 0;
 }
@@ -242,6 +243,7 @@
   transition: all 0.3s;
   backdrop-filter: blur(5px);
 }
+
 .back-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
@@ -298,8 +300,8 @@
 .player-card {
   width: 80px;
   height: 80px;
-  background: rgba(0,0,0,0.6);
-  border: 2px dashed rgba(255,255,255,0.3);
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -391,8 +393,8 @@
 .player-list-item {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 12px 15px;
   border-radius: 8px;
   cursor: pointer;
@@ -431,6 +433,7 @@
   text-align: center;
   padding: 20px;
 }
+
 .no-players p {
   margin-bottom: 15px;
   color: var(--error);
@@ -440,9 +443,12 @@
 .rating-gold {
   color: #fbbf24 !important;
 }
+
 .rating-purple {
-  color: #c084fc !important; /* Premium Purple */
+  color: #c084fc !important;
+  /* Premium Purple */
 }
+
 .rating-green {
   color: #4ade80 !important;
 }
@@ -553,7 +559,7 @@
   background: rgba(30, 41, 59, 0.4);
   padding: 25px;
   text-align: left;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
 }
 
@@ -621,9 +627,17 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-.win { color: var(--success) !important; }
-.draw { color: var(--accent-gold) !important; }
-.loss { color: var(--error) !important; }
+.win {
+  color: var(--success) !important;
+}
+
+.draw {
+  color: var(--accent-gold) !important;
+}
+
+.loss {
+  color: var(--error) !important;
+}
 
 /* RESULT BODY LAYOUT */
 .result-body {
@@ -675,6 +689,7 @@
   align-items: center;
   margin-bottom: 5px;
 }
+
 .b-row:last-child {
   margin-bottom: 0;
 }
@@ -708,11 +723,13 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 
@@ -736,7 +753,7 @@
   text-align: center;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sim-title {
@@ -757,15 +774,22 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .sim-scorecard {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   padding: 15px 30px;
   border-radius: 8px;
   margin-top: 15px;
@@ -796,15 +820,28 @@
   align-items: flex-start;
   gap: 10px;
   padding: 15px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 8px;
   border-left: 3px solid transparent;
 }
 
-.event-item.goal { border-color: var(--success); }
-.event-item.opp_goal { border-color: var(--error); background: rgba(239, 68, 68, 0.1); }
-.event-item.miss, .event-item.save { border-color: var(--accent-gold); }
-.event-item.info { border-color: var(--text-secondary); }
+.event-item.goal {
+  border-color: var(--success);
+}
+
+.event-item.opp_goal {
+  border-color: var(--error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.event-item.miss,
+.event-item.save {
+  border-color: var(--accent-gold);
+}
+
+.event-item.info {
+  border-color: var(--text-secondary);
+}
 
 .e-min {
   font-weight: 800;
@@ -827,8 +864,15 @@
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .sim-actions {
@@ -838,12 +882,53 @@
 
 /* MOBILE RESPONSIVENESS */
 @media (max-width: 768px) {
+  .top-nav {
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+
+  .back-btn {
+    font-size: 0.8rem;
+    padding: 10px 20px;
+  }
+
+  .pitch-container,
+  .action-panel {
+    min-width: 100%;
+  }
+
+  .player-card {
+    width: 54px;
+    height: 55px;
+    font-size: 0.6rem;
+    border-radius: 6px;
+  }
+
+  .player-rating {
+    font-size: 1rem;
+  }
+
+  .player-name {
+    font-size: 0.55rem;
+  }
+
+  .position-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+  }
+
+  .draft-layout {
+    flex-direction: column-reverse;
+  }
+
   .result-body {
     flex-direction: column-reverse;
     gap: 20px;
   }
-  
-  .result-left, .result-right {
+
+  .result-left,
+  .result-right {
     width: 100%;
   }
 
@@ -856,7 +941,7 @@
     font-size: 3.5rem !important;
     margin: 10px 0;
   }
-  
+
   .sim-team {
     font-size: 1.2rem !important;
     width: 100%;

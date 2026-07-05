@@ -35,14 +35,14 @@ export class App implements OnInit {
     { position: 'ST', player: null, x: 50, y: 10 },
     { position: 'LW', player: null, x: 20, y: 20 },
     { position: 'RW', player: null, x: 80, y: 20 },
-    { position: 'CAM', player: null, x: 50, y: 30 },
-    { position: 'CM', player: null, x: 30, y: 45 },
-    { position: 'CM', player: null, x: 70, y: 45 },
-    { position: 'LB', player: null, x: 15, y: 65 },
-    { position: 'CB', player: null, x: 35, y: 70 },
-    { position: 'CB', player: null, x: 65, y: 70 },
-    { position: 'RB', player: null, x: 85, y: 65 },
-    { position: 'GK', player: null, x: 50, y: 88 }
+    { position: 'CAM', player: null, x: 50, y: 32 },
+    { position: 'CM', player: null, x: 28, y: 48 },
+    { position: 'CM', player: null, x: 72, y: 48 },
+    { position: 'LB', player: null, x: 12, y: 68 },
+    { position: 'CB', player: null, x: 34, y: 76 },
+    { position: 'CB', player: null, x: 66, y: 76 },
+    { position: 'RB', player: null, x: 88, y: 68 },
+    { position: 'GK', player: null, x: 50, y: 92 }
   ];
 
   totalSpins = 0;
@@ -91,14 +91,14 @@ export class App implements OnInit {
       { position: 'LW', x: 20, y: 20, player: null },
       { position: 'ST', x: 50, y: 10, player: null },
       { position: 'RW', x: 80, y: 20, player: null },
-      { position: 'CAM', x: 50, y: 35, player: null },
-      { position: 'CM', x: 30, y: 50, player: null },
-      { position: 'CM', x: 70, y: 50, player: null },
-      { position: 'LB', x: 15, y: 70, player: null },
-      { position: 'CB', x: 35, y: 75, player: null },
-      { position: 'CB', x: 65, y: 75, player: null },
-      { position: 'RB', x: 85, y: 70, player: null },
-      { position: 'GK', x: 50, y: 88, player: null }
+      { position: 'CAM', x: 50, y: 32, player: null },
+      { position: 'CM', x: 28, y: 48, player: null },
+      { position: 'CM', x: 72, y: 48, player: null },
+      { position: 'LB', x: 12, y: 68, player: null },
+      { position: 'CB', x: 34, y: 76, player: null },
+      { position: 'CB', x: 66, y: 76, player: null },
+      { position: 'RB', x: 88, y: 68, player: null },
+      { position: 'GK', x: 50, y: 92, player: null }
     ];
     this.totalSpins = 0;
     this.currentSpunEra = null;
