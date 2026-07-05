@@ -1,4 +1,7 @@
 <main class="container">
+  <div class="top-nav" *ngIf="gameState !== 'START'">
+    <button class="back-btn" (click)="resetGame()">&#8592; MAIN MENU</button>
+  </div>
   
   <!-- START SCREEN -->
   <div *ngIf="gameState === 'START'" class="start-container">

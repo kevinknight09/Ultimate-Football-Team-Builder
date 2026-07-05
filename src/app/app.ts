@@ -84,6 +84,36 @@ export class App implements OnInit {
     this.showRules = !this.showRules;
   }
 
+  resetGame() {
+    this.gameState = 'START';
+    this.difficulty = 'EASY';
+    this.draftSlots = [
+      { position: 'LW', x: 20, y: 20, player: null },
+      { position: 'ST', x: 50, y: 10, player: null },
+      { position: 'RW', x: 80, y: 20, player: null },
+      { position: 'CAM', x: 50, y: 35, player: null },
+      { position: 'CM', x: 30, y: 50, player: null },
+      { position: 'CM', x: 70, y: 50, player: null },
+      { position: 'LB', x: 15, y: 70, player: null },
+      { position: 'CB', x: 35, y: 75, player: null },
+      { position: 'CB', x: 65, y: 75, player: null },
+      { position: 'RB', x: 85, y: 70, player: null },
+      { position: 'GK', x: 50, y: 88, player: null }
+    ];
+    this.totalSpins = 0;
+    this.currentSpunEra = null;
+    this.isSpinning = false;
+    this.playerScore = 1;
+    this.oppScore = 4;
+    this.currentMinute = 45;
+    this.liveEvents = [];
+    this.allEvents = [];
+    this.simulationComplete = false;
+    this.motm = null;
+    this.teamAnalysis = '';
+    this.playerStats = {};
+  }
+
   cdr = inject(ChangeDetectorRef);
 
   spin() {
