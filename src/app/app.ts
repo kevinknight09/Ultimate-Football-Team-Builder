@@ -58,6 +58,9 @@ export class App implements OnInit {
 
   showRules = false;
 
+  audioCtx: AudioContext | null = null;
+  crowdNoiseNode: AudioBufferSourceNode | null = null;
+
   playerStats: { [playerId: string]: { goals: number, assists: number } } = {};
 
   // Simulation State
@@ -112,9 +115,106 @@ export class App implements OnInit {
     this.motm = null;
     this.teamAnalysis = '';
     this.playerStats = {};
+    
+    this.stopCrowd();
   }
 
   cdr = inject(ChangeDetectorRef);
+
+  initAudio() {
+    if (!this.audioCtx) {
+      this.audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+  }
+
+  playCrowd() {
+    this.initAudio();
+    if (!this.audioCtx) return;
+    
+    if (this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+    
+    const bufferSize = this.audioCtx.sampleRate * 2;
+    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    this.crowdNoiseNode = this.audioCtx.createBufferSource();
+    this.crowdNoiseNode.buffer = buffer;
+    this.crowdNoiseNode.loop = true;
+
+    const filter = this.audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 400;
+
+    const gainNode = this.audioCtx.createGain();
+    gainNode.gain.value = 0.1;
+
+    this.crowdNoiseNode.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.audioCtx.destination);
+    
+    this.crowdNoiseNode.start();
+  }
+
+  stopCrowd() {
+    if (this.crowdNoiseNode) {
+      this.crowdNoiseNode.stop();
+      this.crowdNoiseNode.disconnect();
+      this.crowdNoiseNode = null;
+    }
+  }
+
+  playGoalWhistle() {
+    this.initAudio();
+    if (!this.audioCtx) return;
+    
+    if (this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+
+    const duration = 0.6; 
+    const osc1 = this.audioCtx.createOscillator();
+    const osc2 = this.audioCtx.createOscillator();
+    
+    osc1.type = 'triangle';
+    osc2.type = 'triangle';
+    
+    osc1.frequency.setValueAtTime(2700, this.audioCtx.currentTime);
+    osc2.frequency.setValueAtTime(2850, this.audioCtx.currentTime);
+
+    const lfo = this.audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 40; 
+    
+    const lfoGain = this.audioCtx.createGain();
+    lfoGain.gain.value = 100;
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc1.frequency);
+    lfoGain.connect(osc2.frequency);
+
+    const mainGain = this.audioCtx.createGain();
+    mainGain.gain.setValueAtTime(0, this.audioCtx.currentTime);
+    mainGain.gain.linearRampToValueAtTime(0.5, this.audioCtx.currentTime + 0.05);
+    mainGain.gain.setValueAtTime(0.5, this.audioCtx.currentTime + duration - 0.1);
+    mainGain.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + duration);
+
+    osc1.connect(mainGain);
+    osc2.connect(mainGain);
+    mainGain.connect(this.audioCtx.destination);
+
+    osc1.start();
+    osc2.start();
+    lfo.start();
+
+    osc1.stop(this.audioCtx.currentTime + duration);
+    osc2.stop(this.audioCtx.currentTime + duration);
+    lfo.stop(this.audioCtx.currentTime + duration);
+  }
 
   spin() {
     if (this.totalSpins >= 11) return;
@@ -183,6 +283,8 @@ export class App implements OnInit {
     this.allEvents = [];
     this.simulationComplete = false;
     this.playerStats = {};
+    
+    this.playCrowd();
     
     const players = this.draftSlots.map(s => s.player).filter((p): p is Player => p !== null);
     this.totalRating = players.reduce((sum, p) => sum + p.rating, 0);
@@ -286,8 +388,13 @@ export class App implements OnInit {
          const ev = this.allEvents[eventIndex];
          this.liveEvents.unshift(ev);
          
-         if (ev.type === 'GOAL') this.playerScore++;
-         if (ev.type === 'OPP_GOAL') this.oppScore++;
+         if (ev.type === 'GOAL') {
+           this.playerScore++;
+           this.playGoalWhistle();
+         } else if (ev.type === 'OPP_GOAL') {
+           this.oppScore++;
+           this.playGoalWhistle();
+         }
          
          eventIndex++;
       }
@@ -297,6 +404,8 @@ export class App implements OnInit {
       if (this.currentMinute >= 90) {
         clearInterval(interval);
         this.simulationComplete = true;
+        this.stopCrowd();
+        this.gameState = 'RESULT';
         this.matchScore = `${this.playerScore} - ${this.oppScore}`;
         
         if (this.playerScore > this.oppScore) this.resultMessage = 'COMEBACK COMPLETE';
