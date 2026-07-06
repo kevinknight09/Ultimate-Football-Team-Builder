@@ -12,7 +12,7 @@ export interface DraftSlot {
 
 export interface MatchEvent {
   minute: number;
-  type: 'GOAL' | 'OPP_GOAL' | 'MISS' | 'SAVE' | 'INFO';
+  type: 'GOAL' | 'OPP_GOAL' | 'MISS' | 'SAVE' | 'INFO' | 'PEN_SCORE' | 'PEN_MISS' | 'OPP_PEN_SCORE' | 'OPP_PEN_MISS';
   text: string;
 }
 
@@ -71,6 +71,13 @@ export class App implements OnInit {
   allEvents: MatchEvent[] = [];
   simulationComplete = false;
 
+  wentToExtraTime = false;
+  wentToPenalties = false;
+  playerPenalties = 0;
+  oppPenalties = 0;
+  
+  isSharing = false;
+
   ngOnInit() {
     this.eras = this.dataService.getAllEras();
   }
@@ -115,6 +122,11 @@ export class App implements OnInit {
     this.motm = null;
     this.teamAnalysis = '';
     this.playerStats = {};
+    
+    this.wentToExtraTime = false;
+    this.wentToPenalties = false;
+    this.playerPenalties = 0;
+    this.oppPenalties = 0;
     
     this.stopCrowd();
   }
@@ -306,10 +318,13 @@ export class App implements OnInit {
     this.allEvents.push({ minute: 45, type: 'INFO', text: 'Second half kicks off! The opposition leads 4-1.' });
 
     const effectiveDef = defRating + (midRating * 0.2);
-    if (effectiveDef < 105) { 
+    if (effectiveDef < 110) { 
       this.allEvents.push({ minute: this.rand(50, 65), type: 'OPP_GOAL', text: 'Goal for the opposition! The defense was completely exposed.' });
-      if (effectiveDef < 100) {
+      if (effectiveDef < 105) {
         this.allEvents.push({ minute: this.rand(70, 85), type: 'OPP_GOAL', text: 'Another goal for the opposition. This is turning into a rout.' });
+      }
+      if (effectiveDef < 95) {
+        this.allEvents.push({ minute: this.rand(86, 89), type: 'OPP_GOAL', text: 'A third goal for the opposition! Total collapse at the back.' });
       }
     } else {
       this.allEvents.push({ minute: this.rand(55, 65), type: 'SAVE', text: 'Brilliant defending! The opposition is denied.' });
@@ -326,14 +341,13 @@ export class App implements OnInit {
     else if (effectiveAtt > 100) goalsToScore = 1;
     else goalsToScore = 0;
 
-    for(let i=0; i<goalsToScore; i++) {
-       const min = this.rand(50 + (i*10), 58 + (i*10));
+    const addGoalEvent = (minRangeStart: number, minRangeEnd: number) => {
+       const min = this.rand(minRangeStart, minRangeEnd);
        const scorer = attackers[Math.floor(Math.random() * attackers.length)] || players[0];
        this.playerStats[scorer.id].goals += 1;
        
        let text = `GOAL! ${scorer.name} finds the back of the net!`;
        
-       // 70% chance of an assist
        if (Math.random() > 0.3) {
           let potentialAssisters = midfielders.filter(p => p.id !== scorer.id);
           if (potentialAssisters.length === 0) potentialAssisters = players.filter(p => p.id !== scorer.id);
@@ -343,15 +357,79 @@ export class App implements OnInit {
             text = `GOAL! Brilliant assist by ${assister.name}, finished expertly by ${scorer.name}!`;
           }
        }
-       
        this.allEvents.push({ minute: min, type: 'GOAL', text });
+    };
+
+    for(let i=0; i<goalsToScore; i++) {
+        addGoalEvent(50 + (i*10), 58 + (i*10));
     }
     
     if (goalsToScore < 4 && effectiveAtt > 100) {
       this.allEvents.push({ minute: this.rand(80, 89), type: 'MISS', text: 'Oh! So close! A golden opportunity missed.' });
     }
 
-    this.allEvents.push({ minute: 90, type: 'INFO', text: 'Full Time whistle blows!' });
+    let tempPlayerScore = 1;
+    let tempOppScore = 4;
+    this.allEvents.forEach(e => {
+       if (e.type === 'GOAL') tempPlayerScore++;
+       if (e.type === 'OPP_GOAL') tempOppScore++;
+    });
+
+    if (tempPlayerScore === tempOppScore) {
+       this.allEvents.push({ minute: 90, type: 'INFO', text: 'Full Time! We are heading to Extra Time!' });
+       this.wentToExtraTime = true;
+       
+       if (effectiveAtt > 110 && Math.random() > 0.5) {
+          addGoalEvent(95, 115);
+          tempPlayerScore++;
+       }
+       if (effectiveDef < 105 && Math.random() > 0.5) {
+          this.allEvents.push({ minute: this.rand(95, 115), type: 'OPP_GOAL', text: 'Heartbreak! The opposition scores in Extra Time!' });
+          tempOppScore++;
+       }
+       
+       if (tempPlayerScore === tempOppScore) {
+           this.allEvents.push({ minute: 120, type: 'INFO', text: '120 Minutes played! It goes to Penalties!' });
+           this.wentToPenalties = true;
+           
+           let pScore = 0;
+           let oScore = 0;
+           for(let i=1; i<=5; i++) {
+               const pScored = Math.random() < 0.75;
+               if (pScored) pScore++;
+               this.allEvents.push({ minute: 120 + i, type: pScored ? 'PEN_SCORE' : 'PEN_MISS', text: pScored ? `Penalty ${i} scored by you!` : `Penalty ${i} missed by you!` });
+               
+               if (pScore > oScore + (5 - i + 1)) break;
+               if (oScore > pScore + (5 - i)) break;
+
+               const oScored = Math.random() < 0.75;
+               if (oScored) oScore++;
+               this.allEvents.push({ minute: 120 + i + 0.5, type: oScored ? 'OPP_PEN_SCORE' : 'OPP_PEN_MISS', text: oScored ? `Penalty ${i} scored by opposition.` : `Penalty ${i} missed by opposition.` });
+               
+               if (pScore > oScore + (5 - i)) break;
+               if (oScore > pScore + (5 - i)) break;
+           }
+           
+           let round = 6;
+           while(pScore === oScore && round <= 11) {
+               const pScored = Math.random() < 0.75;
+               if (pScored) pScore++;
+               this.allEvents.push({ minute: 120 + round, type: pScored ? 'PEN_SCORE' : 'PEN_MISS', text: pScored ? `Sudden death penalty scored!` : `Sudden death penalty missed!` });
+               
+               const oScored = Math.random() < 0.75;
+               if (oScored) oScore++;
+               this.allEvents.push({ minute: 120 + round + 0.5, type: oScored ? 'OPP_PEN_SCORE' : 'OPP_PEN_MISS', text: oScored ? `Opponent answers with a score.` : `Opponent misses!` });
+               
+               round++;
+           }
+           
+       } else {
+           this.allEvents.push({ minute: 120, type: 'INFO', text: 'Extra Time whistle blows!' });
+       }
+    } else {
+       this.allEvents.push({ minute: 90, type: 'INFO', text: 'Full Time whistle blows!' });
+    }
+
     this.allEvents.sort((a, b) => a.minute - b.minute);
 
     // Calculate MOTM (Goals = 3pts, Assists = 2pts, Base rating = 0.1pts)
@@ -379,9 +457,15 @@ export class App implements OnInit {
 
   runSimulation() {
     let eventIndex = 0;
+    const maxMinute = this.allEvents[this.allEvents.length - 1]?.minute || 90;
+    
     const interval = setInterval(() => {
-      if (this.currentMinute < 90) {
-         this.currentMinute += 1;
+      if (this.currentMinute < maxMinute) {
+         if (this.currentMinute >= 120 && this.wentToPenalties) {
+             this.currentMinute += 0.5;
+         } else {
+             this.currentMinute += 1;
+         }
       }
       
       while (eventIndex < this.allEvents.length && this.allEvents[eventIndex].minute <= this.currentMinute) {
@@ -394,6 +478,12 @@ export class App implements OnInit {
          } else if (ev.type === 'OPP_GOAL') {
            this.oppScore++;
            this.playGoalWhistle();
+         } else if (ev.type === 'PEN_SCORE') {
+           this.playerPenalties++;
+           this.playGoalWhistle();
+         } else if (ev.type === 'OPP_PEN_SCORE') {
+           this.oppPenalties++;
+           this.playGoalWhistle();
          }
          
          eventIndex++;
@@ -401,15 +491,22 @@ export class App implements OnInit {
       
       this.cdr.detectChanges();
 
-      if (this.currentMinute >= 90) {
+      if (this.currentMinute >= maxMinute) {
         clearInterval(interval);
         this.simulationComplete = true;
         this.stopCrowd();
         this.gameState = 'RESULT';
         this.matchScore = `${this.playerScore} - ${this.oppScore}`;
         
-        if (this.playerScore > this.oppScore) this.resultMessage = 'COMEBACK COMPLETE';
-        else if (this.playerScore === this.oppScore) this.resultMessage = 'SO CLOSE';
+        let won = this.playerScore > this.oppScore;
+        let drawn = this.playerScore === this.oppScore;
+        
+        if (drawn && this.wentToPenalties) {
+            won = this.playerPenalties > this.oppPenalties;
+        }
+
+        if (won) this.resultMessage = 'COMEBACK COMPLETE';
+        else if (drawn) this.resultMessage = 'SO CLOSE';
         else this.resultMessage = 'CRUSHED';
         
         this.cdr.detectChanges();
@@ -422,30 +519,41 @@ export class App implements OnInit {
   }
 
   shareSquad() {
-    const element = document.getElementById('shareable-result');
-    if (!element) return;
-    
-    html2canvas(element, { backgroundColor: '#0f172a' }).then(canvas => {
-      const imgData = canvas.toDataURL('image/jpeg', 0.9);
+    this.isSharing = true;
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      const element = document.getElementById('shareable-result');
+      if (!element) return;
       
-      if (navigator.share) {
-        canvas.toBlob(blob => {
-          if (blob) {
-            const file = new File([blob], 'squad.jpg', { type: 'image/jpeg' });
-            navigator.share({
-              title: 'My Legendary Squad',
-              text: 'Check out the squad I built to attempt the 4-1 comeback!',
-              files: [file]
-            }).catch(err => {
-              console.error('Share failed:', err);
-              this.fallbackDownload(imgData);
-            });
-          }
-        }, 'image/jpeg');
-      } else {
-        this.fallbackDownload(imgData);
-      }
-    });
+      html2canvas(element, { backgroundColor: '#0f172a' }).then(canvas => {
+        this.isSharing = false;
+        this.cdr.detectChanges();
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.9);
+        
+        if (navigator.share) {
+          canvas.toBlob(blob => {
+            if (blob) {
+              const file = new File([blob], 'squad.jpg', { type: 'image/jpeg' });
+              navigator.share({
+                title: 'My Legendary Squad',
+                text: 'Check out the squad I built to attempt the 4-1 comeback!',
+                files: [file]
+              }).catch(err => {
+                console.error('Share failed:', err);
+                this.fallbackDownload(imgData);
+              });
+            }
+          }, 'image/jpeg');
+        } else {
+          this.fallbackDownload(imgData);
+        }
+      }).catch(err => {
+        this.isSharing = false;
+        this.cdr.detectChanges();
+      });
+    }, 50); // tiny delay to let angular render the watermark
   }
 
   fallbackDownload(imgData: string) {

@@ -22,8 +22,13 @@
 }
 
 body {
-  background: var(--bg-darker);
-  background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 100%);
+  background-color: var(--bg-darker);
+  background-image: 
+    linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.95)), 
+    url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;

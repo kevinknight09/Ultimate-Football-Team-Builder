@@ -288,9 +288,9 @@
 .position-badge {
   background: var(--bg-darker);
   color: var(--accent-gold);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 10px;
   margin-bottom: -5px;
   z-index: 2;
@@ -298,8 +298,8 @@
 }
 
 .player-card {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   background: rgba(0, 0, 0, 0.6);
   border: 2px dashed rgba(255, 255, 255, 0.3);
   border-radius: 8px;
@@ -307,7 +307,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   transition: all 0.3s;
   backdrop-filter: blur(4px);
@@ -329,15 +329,15 @@
 }
 
 .player-rating {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--accent-gold);
 }
 
 .player-name {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   line-height: 1.1;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .progress {
@@ -487,6 +487,13 @@
   margin: 0;
 }
 
+.pen-score {
+  font-size: 3.5rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+  font-weight: 600;
+}
+
 .match-time {
   font-size: 1rem;
   color: var(--text-secondary);
@@ -500,6 +507,15 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 800;
+}
+
+.result-analysis {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 10px auto 20px;
+  line-height: 1.5;
 }
 
 .result-subtitle {
@@ -672,6 +688,19 @@
   transform: scale(0.9);
   transform-origin: center;
   position: relative;
+}
+
+.watermark-overlay {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  pointer-events: none;
+  font-weight: 600;
 }
 
 .broadcast-scorers {
@@ -899,18 +928,18 @@
   }
 
   .player-card {
-    width: 54px;
-    height: 55px;
-    font-size: 0.6rem;
+    width: 60px;
+    height: 60px;
+    font-size: 0.65rem;
     border-radius: 6px;
   }
 
   .player-rating {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .player-name {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 
   .position-badge {
@@ -937,14 +966,37 @@
     gap: 10px !important;
   }
 
-  .sim-score {
-    font-size: 3.5rem !important;
+  #shareable-result {
+    padding: 20px;
+  }
+
+  .score-display {
+    font-size: 4rem !important;
     margin: 10px 0;
+  }
+
+  .pen-score {
+    font-size: 2rem !important;
+  }
+
+  .result-pitch {
+    transform: none;
+    min-height: 480px;
   }
 
   .sim-team {
     font-size: 1.2rem !important;
     width: 100%;
     text-align: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 30px;
+  }
+  
+  .action-buttons button {
+    width: 100%;
   }
 }

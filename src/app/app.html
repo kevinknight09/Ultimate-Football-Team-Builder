@@ -173,17 +173,24 @@
       <div class="result-header">
         <div class="match-context">4-1 DOWN &middot; FINAL SCORE</div>
         <h1 class="score-display" 
-            [class.win]="playerScore > oppScore" 
-            [class.draw]="playerScore === oppScore" 
-            [class.loss]="playerScore < oppScore">
+            [class.win]="(playerScore > oppScore) || (playerScore === oppScore && playerPenalties > oppPenalties)" 
+            [class.draw]="playerScore === oppScore && !wentToPenalties" 
+            [class.loss]="(playerScore < oppScore) || (playerScore === oppScore && playerPenalties < oppPenalties)">
+          <span *ngIf="wentToPenalties" class="pen-score">({{playerPenalties}}) </span>
           {{ matchScore }}
+          <span *ngIf="wentToPenalties" class="pen-score"> ({{oppPenalties}})</span>
         </h1>
-        <div class="match-time">90 MINUTES</div>
+        <div class="match-time">
+           <span *ngIf="!wentToExtraTime">90 MINUTES</span>
+           <span *ngIf="wentToExtraTime && !wentToPenalties">120 MINUTES (AET)</span>
+           <span *ngIf="wentToPenalties">WON ON PENALTIES</span>
+        </div>
         <h2 class="result-title">{{ resultMessage }}</h2>
+        <h3 class="result-analysis">{{ teamAnalysis }}</h3>
       </div>
 
       <div class="result-body">
-        <div class="result-left">
+        <div class="result-left" data-html2canvas-ignore="true">
           
           <div class="broadcast-scorers" *ngIf="getScorersAndAssisters().length > 0">
             <div class="b-row" *ngFor="let stat of getScorersAndAssisters()">
@@ -222,8 +229,9 @@
 
         <div class="result-right">
           <div class="football-pitch result-pitch">
-            
+            <div class="watermark-overlay" *ngIf="isSharing">ultimatefootballsquad.netlify.app</div>
             <div class="draft-slot" *ngFor="let slot of draftSlots" [style.left.%]="slot.x" [style.top.%]="slot.y">
+              <div class="position-badge" *ngIf="slot.player">{{ slot.position }}</div>
               <div class="player-card filled result-card">
                 <div class="player-info">
                   <span class="player-rating" [ngClass]="difficulty === 'EASY' ? getRatingClass(slot.player?.rating) : ''">
