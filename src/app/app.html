@@ -190,7 +190,7 @@
       </div>
 
       <div class="result-body">
-        <div class="result-left" data-html2canvas-ignore="true">
+        <div class="result-left" *ngIf="!isSharing">
           
           <div class="broadcast-scorers" *ngIf="getScorersAndAssisters().length > 0">
             <div class="b-row" *ngFor="let stat of getScorersAndAssisters()">
