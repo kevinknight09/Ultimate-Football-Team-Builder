@@ -22,11 +22,11 @@
         <div class="diff-title">CHOOSE DIFFICULTY</div>
         <div class="diff-buttons">
           <button class="diff-btn" [class.active]="difficulty === 'EASY'" (click)="setDifficulty('EASY')">
-            <span class="d-main">EASY</span>
+            <span class="d-main">NEW BALLER</span>
             <span class="d-sub">Ratings shown</span>
           </button>
           <button class="diff-btn" [class.active]="difficulty === 'HARD'" (click)="setDifficulty('HARD')">
-            <span class="d-main">HARD</span>
+            <span class="d-main">ELITE BALLER</span>
             <span class="d-sub">Ratings hidden</span>
           </button>
         </div>
@@ -252,4 +252,12 @@
     </div>
   </div>
 
+  <div class="disclaimer-section">
+    <button class="disclaimer-toggle" (click)="toggleDisclaimer()">
+      DISCLAIMER <span class="arrow" [class.open]="showDisclaimer">&#9652;</span>
+    </button>
+    <div class="disclaimer-content fade-in-up" *ngIf="showDisclaimer">
+      <p>Ultimate Football Squad is an independent fan-made prototype. Not affiliated with any football association, competition or player. Names and ratings are this game's own editorial interpretation, used descriptively.</p>
+    </div>
+  </div>
 </main>

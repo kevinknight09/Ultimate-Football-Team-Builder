@@ -77,6 +77,7 @@ export class App implements OnInit {
   oppPenalties = 0;
   
   isSharing = false;
+  showDisclaimer = false;
 
   ngOnInit() {
     this.eras = this.dataService.getAllEras();
@@ -317,7 +318,13 @@ export class App implements OnInit {
 
     this.allEvents.push({ minute: 45, type: 'INFO', text: 'Second half kicks off! The opposition leads 4-1.' });
 
-    const effectiveDef = defRating + (midRating * 0.2);
+    const effectiveDefBase = defRating + (midRating * 0.2);
+    
+    // Midfield vulnerability check
+    const centralMidfielders = players.filter(p => ['CM', 'CAM'].includes(p.position));
+    const hasWeakMidfield = centralMidfielders.some(p => p.rating < 90);
+    
+    const effectiveDef = hasWeakMidfield ? (effectiveDefBase - 15) : effectiveDefBase;
     if (effectiveDef < 110) { 
       this.allEvents.push({ minute: this.rand(50, 65), type: 'OPP_GOAL', text: 'Goal for the opposition! The defense was completely exposed.' });
       if (effectiveDef < 105) {
@@ -594,5 +601,9 @@ export class App implements OnInit {
 
   getArray(n: number): any[] {
     return Array(n);
+  }
+
+  toggleDisclaimer() {
+    this.showDisclaimer = !this.showDisclaimer;
   }
 }
