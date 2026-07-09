@@ -78,6 +78,10 @@ export class App implements OnInit {
   
   isSharing = false;
 
+  showFeedbackModal = false;
+  submittingFeedback = false;
+  feedbackSuccess = false;
+
   ngOnInit() {
     this.eras = this.dataService.getAllEras();
   }
@@ -594,5 +598,38 @@ export class App implements OnInit {
 
   getArray(n: number): any[] {
     return Array(n);
+  }
+
+  openFeedbackModal() {
+    this.showFeedbackModal = true;
+    this.feedbackSuccess = false;
+  }
+
+  closeFeedbackModal() {
+    this.showFeedbackModal = false;
+  }
+
+  submitFeedback(event: any) {
+    event.preventDefault();
+    this.submittingFeedback = true;
+    
+    const formData = new FormData(event.target);
+    const data = new URLSearchParams();
+    data.append('form-name', 'feedback');
+    data.append('name', formData.get('name') as string || 'Anonymous');
+    data.append('message', formData.get('message') as string);
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: data.toString()
+    }).then(() => {
+      this.submittingFeedback = false;
+      this.feedbackSuccess = true;
+    }).catch(error => {
+      console.error('Error submitting feedback', error);
+      this.submittingFeedback = false;
+      alert('Failed to submit feedback. Please try again later.');
+    });
   }
 }
