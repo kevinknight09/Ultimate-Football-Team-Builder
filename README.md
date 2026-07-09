@@ -1,59 +1,70 @@
-# FootballTeamBuilder
+# ⚽ Ultimate Football Squad
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
-## Development server
+> *A mysterious opposition has posted a 4-1 lead at halftime. A flawless, untouchable performance, rarely seen in the history of the game. Now, draft your legendary XI to make the impossible comeback.*
 
-To start a local development server, run:
+Welcome to the **Ultimate Football Squad** — an interactive, premium-designed web application that lets you draft iconic football players from different historic eras to simulate a thrilling, high-stakes match comeback!
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🌟 Features
 
-## Code scaffolding
+- **🏆 Legendary Draft Pool**: Spin the wheel to unlock iconic eras (e.g., Argentina 2010s, Portugal 2010s, Spain 2010s) and draft superstars like Lionel Messi and Cristiano Ronaldo.
+- **🧠 Tactical Simulation Engine**: Your drafted lineup matters. A weak midfield leaves your defense exposed, and a lethal attack is required to overcome the massive 4-1 deficit.
+- **⚖️ Dynamic Difficulty**: 
+  - **New Baller**: Player ratings are fully visible.
+  - **Elite Baller**: Ratings are hidden. Trust your footballing knowledge.
+- **📸 Social Sharing**: Perfectly cropped screenshot generation built right into the app to share your drafted squads on social media.
+- **✨ Premium UI/UX**: Stunning dark mode aesthetics, glassmorphism components, and smooth micro-animations.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 🚀 How to Run Locally
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+To get a local copy up and running, follow these simple steps:
 
-```bash
-ng generate --help
-```
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) and [Angular CLI](https://angular.io/cli) installed on your machine.
 
-## Building
+### Installation
 
-To build the project run:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/ultimate-football-squad.git
+   ```
+2. **Navigate to the directory:**
+   ```bash
+   cd ultimate-football-squad
+   ```
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+4. **Start the development server:**
+   ```bash
+   npm run start
+   ```
+5. **Open in Browser:** Navigate to `http://localhost:4200` to play the game!
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🛠️ Built With
 
-## Running unit tests
+* **Core:** Angular 18, TypeScript, HTML5
+* **Styling:** Vanilla CSS (Tailored custom properties, responsive design, CSS animations)
+* **Image Generation:** html2canvas
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## ⚠️ Disclaimer
 
-## Running end-to-end tests
+**Ultimate Football Squad** is an independent fan-made prototype. It is not affiliated with any football association, board, competition, or player. All player names, ratings, and statistics are this game's own editorial interpretation and are used descriptively for entertainment purposes only.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+<div align="center">
+  <i>Built with passion by a true fan of the beautiful game.</i>
+</div>
