@@ -5,6 +5,29 @@
   margin: 0 auto;
 }
 
+.global-pretitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  padding: 10px 0 30px 0;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.modal-pretitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
 .start-container {
   display: flex;
   flex-direction: column;

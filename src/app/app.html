@@ -1,4 +1,5 @@
 <main class="container">
+  <div class="global-pretitle" *ngIf="gameState !== 'START'">UNOFFICIAL FAN DRAFT GAME</div>
   <div class="top-nav" *ngIf="gameState !== 'START'">
     <button class="back-btn" (click)="resetGame()">&#8592; MAIN MENU</button>
   </div>

@@ -450,10 +450,21 @@ export class App implements OnInit {
        }
     });
 
-    if (effectiveDef < 105) this.teamAnalysis = "The defense was too leaky to mount a serious comeback.";
-    else if (effectiveAtt > 111) this.teamAnalysis = "An absolutely lethal attack tore the opposition apart.";
-    else if (effectiveAtt > 109) this.teamAnalysis = "A valiant attacking display, but just fell short of the miracle.";
-    else this.teamAnalysis = "The frontline lacked the clinical edge needed to turn this game around.";
+    if (hasWeakMidfield && effectiveDef < 105) {
+      if (effectiveAtt > 109) {
+        this.teamAnalysis = "Your attack was world class, but the midfield lacked legendary status and completely exposed the defense.";
+      } else {
+        this.teamAnalysis = "The midfield lacked the legendary status needed to compete, leaving the defense completely vulnerable.";
+      }
+    } else if (effectiveDef < 105) {
+      this.teamAnalysis = "The defense was too leaky to mount a serious comeback.";
+    } else if (effectiveAtt > 111) {
+      this.teamAnalysis = "An absolutely lethal attack tore the opposition apart.";
+    } else if (effectiveAtt > 109) {
+      this.teamAnalysis = "A valiant attacking display, but just fell short of the miracle.";
+    } else {
+      this.teamAnalysis = "The frontline lacked the clinical edge needed to turn this game around.";
+    }
 
     this.runSimulation();
   }
