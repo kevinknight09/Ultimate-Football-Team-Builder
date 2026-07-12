@@ -643,16 +643,18 @@ export class App implements OnInit {
     const nameInput = document.getElementById('f-name') as HTMLInputElement;
     const msgInput = document.getElementById('f-msg') as HTMLTextAreaElement;
     
-    const data = new URLSearchParams();
+    const data = new FormData();
     data.append('form-name', 'feedback');
     data.append('name', nameInput?.value || 'Anonymous');
     data.append('message', msgInput?.value || '');
 
     fetch('/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: data.toString()
-    }).then(() => {
+      body: data
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       this.submittingFeedback = false;
       this.feedbackSuccess = true;
     }).catch(error => {
