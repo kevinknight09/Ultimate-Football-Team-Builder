@@ -47,6 +47,7 @@ export class App implements OnInit {
 
   totalSpins = 0;
   isSpinning = false;
+  hasRerolled = false;
   currentSpunEra: Era | null = null;
   lastSpunEra: Era | null = null;
   
@@ -112,6 +113,7 @@ export class App implements OnInit {
       { position: 'GK', x: 50, y: 92, player: null }
     ];
     this.totalSpins = 0;
+    this.hasRerolled = false;
     this.currentSpunEra = null;
     this.isSpinning = false;
     this.playerScore = 1;
@@ -227,6 +229,12 @@ export class App implements OnInit {
     osc1.stop(this.audioCtx.currentTime + duration);
     osc2.stop(this.audioCtx.currentTime + duration);
     lfo.stop(this.audioCtx.currentTime + duration);
+  }
+
+  reroll() {
+    if (this.hasRerolled || this.totalSpins >= 11) return;
+    this.hasRerolled = true;
+    this.spin();
   }
 
   spin() {
@@ -585,6 +593,7 @@ export class App implements OnInit {
     this.gameState = 'START';
     this.totalSpins = 0;
     this.totalRating = 0;
+    this.hasRerolled = false;
     this.currentSpunEra = null;
     this.lastSpunEra = null;
     this.draftSlots.forEach(s => s.player = null);
