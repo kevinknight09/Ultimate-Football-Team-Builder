@@ -640,11 +640,13 @@ export class App implements OnInit {
     event.preventDefault();
     this.submittingFeedback = true;
     
-    const formData = new FormData(event.target);
+    const nameInput = document.getElementById('f-name') as HTMLInputElement;
+    const msgInput = document.getElementById('f-msg') as HTMLTextAreaElement;
+    
     const data = new URLSearchParams();
     data.append('form-name', 'feedback');
-    data.append('name', formData.get('name') as string || 'Anonymous');
-    data.append('message', formData.get('message') as string);
+    data.append('name', nameInput?.value || 'Anonymous');
+    data.append('message', msgInput?.value || '');
 
     fetch('/', {
       method: 'POST',
