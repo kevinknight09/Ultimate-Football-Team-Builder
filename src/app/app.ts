@@ -47,6 +47,7 @@ export class App implements OnInit {
 
   totalSpins = 0;
   isSpinning = false;
+  hasRerolled = false;
   currentSpunEra: Era | null = null;
   lastSpunEra: Era | null = null;
   
@@ -77,6 +78,7 @@ export class App implements OnInit {
   oppPenalties = 0;
   
   isSharing = false;
+  showDisclaimer = false;
 
   showFeedbackModal = false;
   submittingFeedback = false;
@@ -115,6 +117,7 @@ export class App implements OnInit {
       { position: 'GK', x: 50, y: 92, player: null }
     ];
     this.totalSpins = 0;
+    this.hasRerolled = false;
     this.currentSpunEra = null;
     this.isSpinning = false;
     this.playerScore = 1;
@@ -232,6 +235,12 @@ export class App implements OnInit {
     lfo.stop(this.audioCtx.currentTime + duration);
   }
 
+  reroll() {
+    if (this.hasRerolled || this.totalSpins >= 11) return;
+    this.hasRerolled = true;
+    this.spin();
+  }
+
   spin() {
     if (this.totalSpins >= 11) return;
     this.isSpinning = true;
@@ -321,7 +330,13 @@ export class App implements OnInit {
 
     this.allEvents.push({ minute: 45, type: 'INFO', text: 'Second half kicks off! The opposition leads 4-1.' });
 
-    const effectiveDef = defRating + (midRating * 0.2);
+    const effectiveDefBase = defRating + (midRating * 0.2);
+    
+    // Midfield vulnerability check
+    const centralMidfielders = players.filter(p => ['CM', 'CAM'].includes(p.position));
+    const hasWeakMidfield = centralMidfielders.some(p => p.rating < 90);
+    
+    const effectiveDef = hasWeakMidfield ? (effectiveDefBase - 15) : effectiveDefBase;
     if (effectiveDef < 110) { 
       this.allEvents.push({ minute: this.rand(50, 65), type: 'OPP_GOAL', text: 'Goal for the opposition! The defense was completely exposed.' });
       if (effectiveDef < 105) {
@@ -447,10 +462,21 @@ export class App implements OnInit {
        }
     });
 
-    if (effectiveDef < 105) this.teamAnalysis = "The defense was too leaky to mount a serious comeback.";
-    else if (effectiveAtt > 111) this.teamAnalysis = "An absolutely lethal attack tore the opposition apart.";
-    else if (effectiveAtt > 109) this.teamAnalysis = "A valiant attacking display, but just fell short of the miracle.";
-    else this.teamAnalysis = "The frontline lacked the clinical edge needed to turn this game around.";
+    if (hasWeakMidfield && effectiveDef < 105) {
+      if (effectiveAtt > 109) {
+        this.teamAnalysis = "Your attack was world class, but the midfield lacked legendary status and completely exposed the defense.";
+      } else {
+        this.teamAnalysis = "The midfield lacked the legendary status needed to compete, leaving the defense completely vulnerable.";
+      }
+    } else if (effectiveDef < 105) {
+      this.teamAnalysis = "The defense was too leaky to mount a serious comeback.";
+    } else if (effectiveAtt > 111) {
+      this.teamAnalysis = "An absolutely lethal attack tore the opposition apart.";
+    } else if (effectiveAtt > 109) {
+      this.teamAnalysis = "A valiant attacking display, but just fell short of the miracle.";
+    } else {
+      this.teamAnalysis = "The frontline lacked the clinical edge needed to turn this game around.";
+    }
 
     this.runSimulation();
   }
@@ -571,6 +597,7 @@ export class App implements OnInit {
     this.gameState = 'START';
     this.totalSpins = 0;
     this.totalRating = 0;
+    this.hasRerolled = false;
     this.currentSpunEra = null;
     this.lastSpunEra = null;
     this.draftSlots.forEach(s => s.player = null);
@@ -631,5 +658,7 @@ export class App implements OnInit {
       this.submittingFeedback = false;
       alert('Failed to submit feedback. Please try again later.');
     });
+  toggleDisclaimer() {
+    this.showDisclaimer = !this.showDisclaimer;
   }
 }

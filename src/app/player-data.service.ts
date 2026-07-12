@@ -17,7 +17,7 @@ export interface Era {
   providedIn: 'root'
 })
 export class PlayerDataService {
-  
+
   private eras: Era[] = [
     {
       id: 'spain_2010s',
@@ -127,7 +127,7 @@ export class PlayerDataService {
         { id: 'por_9', name: 'Joao Palhinha', rating: 85, position: 'CM' },
         { id: 'por_10', name: 'Bernardo Silva', rating: 89, position: 'CAM' },
         { id: 'por_11', name: 'Rafael Leao', rating: 87, position: 'LW' },
-        { id: 'por_12', name: 'Cristiano Ronaldo', rating: 92, position: 'ST' },
+        { id: 'por_12', name: 'Cristiano Ronaldo', rating: 95, position: 'ST' },
         { id: 'por_13', name: 'Diogo Jota', rating: 85, position: 'RW' }
       ]
     },
@@ -305,6 +305,40 @@ export class PlayerDataService {
         { id: 'spa2_9', name: 'Ferran Torres', rating: 82, position: 'LW' },
         { id: 'spa2_10', name: 'Mikel Oyarzabal', rating: 83, position: 'RW' },
         { id: 'spa2_11', name: 'Alvaro Morata', rating: 84, position: 'ST' }
+      ]
+    },
+    {
+      id: 'argentina_2010s',
+      name: 'Argentina 2010s',
+      players: [
+        { id: 'arg10_1', name: 'Sergio Romero', rating: 82, position: 'GK' },
+        { id: 'arg10_2', name: 'Ezequiel Garay', rating: 84, position: 'CB' },
+        { id: 'arg10_3', name: 'Javier Mascherano', rating: 87, position: 'CB' },
+        { id: 'arg10_4', name: 'Pablo Zabaleta', rating: 85, position: 'RB' },
+        { id: 'arg10_5', name: 'Marcos Rojo', rating: 80, position: 'LB' },
+        { id: 'arg10_6', name: 'Fernando Gago', rating: 81, position: 'CM' },
+        { id: 'arg10_7', name: 'Angel Di Maria', rating: 88, position: 'LW' },
+        { id: 'arg10_8', name: 'Javier Pastore', rating: 82, position: 'CAM' },
+        { id: 'arg10_9', name: 'Lionel Messi', rating: 96, position: 'RW' },
+        { id: 'arg10_10', name: 'Sergio Aguero', rating: 89, position: 'ST' },
+        { id: 'arg10_11', name: 'Gonzalo Higuain', rating: 86, position: 'ST' }
+      ]
+    },
+    {
+      id: 'portugal_2010s',
+      name: 'Portugal 2010s',
+      players: [
+        { id: 'por10_1', name: 'Rui Patricio', rating: 83, position: 'GK' },
+        { id: 'por10_2', name: 'Pepe', rating: 88, position: 'CB' },
+        { id: 'por10_3', name: 'Bruno Alves', rating: 82, position: 'CB' },
+        { id: 'por10_4', name: 'Joao Pereira', rating: 79, position: 'RB' },
+        { id: 'por10_5', name: 'Fabio Coentrao', rating: 84, position: 'LB' },
+        { id: 'por10_6', name: 'Joao Moutinho', rating: 86, position: 'CM' },
+        { id: 'por10_7', name: 'Raul Meireles', rating: 81, position: 'CM' },
+        { id: 'por10_8', name: 'Ricardo Quaresma', rating: 82, position: 'CAM' },
+        { id: 'por10_9', name: 'Nani', rating: 85, position: 'RW' },
+        { id: 'por10_10', name: 'Cristiano Ronaldo', rating: 96, position: 'LW' },
+        { id: 'por10_11', name: 'Hugo Almeida', rating: 79, position: 'ST' }
       ]
     }
   ];

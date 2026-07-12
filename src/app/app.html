@@ -1,8 +1,9 @@
 <main class="container">
+  <div class="global-pretitle" *ngIf="gameState !== 'START'">UNOFFICIAL FAN DRAFT GAME</div>
   <div class="top-nav" *ngIf="gameState !== 'START'">
     <button class="back-btn" (click)="resetGame()">&#8592; MAIN MENU</button>
   </div>
-  
+
   <!-- START SCREEN -->
   <div *ngIf="gameState === 'START'" class="start-container">
     <div class="logo-badge">
@@ -11,13 +12,14 @@
         <h1 class="huge-score">4 &ndash; 1</h1>
       </div>
     </div>
-    
+
     <div class="glass-panel start-modal">
       <div class="modal-pretitle">UNOFFICIAL FAN DRAFT GAME</div>
-      <p class="modal-desc">A mysterious opposition has posted a 4-1 lead at halftime. A flawless, untouchable performance, rarely seen in the history of the game.</p>
-      
+      <p class="modal-desc">A mysterious opposition has posted a 4-1 lead at halftime. A flawless, untouchable
+        performance, rarely seen in the history of the game.</p>
+
       <h2 class="modal-title">NOW DRAFT YOUR LEGENDARY XI TO MAKE THE IMPOSSIBLE COMEBACK.</h2>
-      
+
       <div class="difficulty-section">
         <div class="diff-title">CHOOSE DIFFICULTY</div>
         <div class="diff-buttons">
@@ -32,7 +34,7 @@
         </div>
         <div class="diff-note">Only for the ones with real tactical knowledge.</div>
       </div>
-      
+
       <div class="start-actions">
         <button class="btn-primary huge-btn" (click)="startGame()">DRAFT</button>
         <button class="btn-outline dark-outline" (click)="toggleRules()">
@@ -49,11 +51,12 @@
             <li>Once 11 players are drafted, simulate the 2nd half to see if you can come back!</li>
           </ul>
         </div>
-        
+
         <div class="rule-block">
           <h3>SIMULATION &amp; RATINGS</h3>
           <ul>
-            <li><strong>Engine:</strong> Your squad's Attack and Defense strengths are calculated separately to determine chances created and conceded.</li>
+            <li><strong>Engine:</strong> Your squad's Attack and Defense strengths are calculated separately to
+              determine chances created and conceded.</li>
             <li><span class="rating-gold">95+</span> &mdash; Golden Generation</li>
             <li><span class="rating-purple">90-94</span> &mdash; World Class Elite</li>
             <li><span class="rating-green">&lt; 90</span> &mdash; Great/Average</li>
@@ -65,15 +68,13 @@
 
   <!-- DRAFT SCREEN -->
   <div *ngIf="gameState === 'DRAFT'" class="draft-layout">
-    
+
     <!-- LEFT: Draft Board (Football Pitch) -->
     <div class="pitch-container">
       <div class="football-pitch">
-        
-        <div class="draft-slot" 
-             *ngFor="let slot of draftSlots; let i = index"
-             [style.left]="slot.x + '%'" 
-             [style.top]="slot.y + '%'">
+
+        <div class="draft-slot" *ngFor="let slot of draftSlots; let i = index" [style.left]="slot.x + '%'"
+          [style.top]="slot.y + '%'">
           <div class="position-badge">{{ slot.position }}</div>
           <div class="player-card" [class.filled]="slot.player">
             <span *ngIf="!slot.player">Pick</span>
@@ -85,42 +86,41 @@
             </div>
           </div>
         </div>
-        
+
       </div>
       <div class="progress">
         Draft Progress: {{ totalSpins }} / 11
       </div>
-      <button class="btn-primary simulate-btn" 
-              *ngIf="totalSpins === 11" 
-              (click)="simulate()">
+      <button class="btn-primary simulate-btn" *ngIf="totalSpins === 11" (click)="simulate()">
         SIMULATE MATCH
       </button>
     </div>
 
     <!-- RIGHT: Spin and Selection -->
     <div class="action-panel glass-panel">
-      
+
       <div class="spin-section" *ngIf="!currentSpunEra">
         <h2>Draft a Player</h2>
         <p *ngIf="totalSpins < 11">Spin to reveal an Era/Country</p>
         <p *ngIf="totalSpins === 11">Squad Complete!</p>
-        
-        <button class="btn-primary" 
-                (click)="spin()" 
-                [disabled]="isSpinning || totalSpins >= 11">
+
+        <button class="btn-primary" (click)="spin()" [disabled]="isSpinning || totalSpins >= 11">
           {{ isSpinning ? 'SPINNING...' : 'SPIN' }}
         </button>
       </div>
 
       <div class="selection-section" *ngIf="currentSpunEra">
-        <h3>{{ currentSpunEra.name }}</h3>
-        <p>Select one player to add to your squad. (Only players fitting empty slots are shown)</p>
-        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h3 style="margin: 0;">{{ currentSpunEra.name }}</h3>
+          <button class="btn-secondary" (click)="reroll()" *ngIf="!hasRerolled"
+            style="padding: 0.4rem 0.8rem; font-size: 0.8rem; min-width: auto; background-color: rgba(255, 255, 255, 0.1);">RE-ROLL</button>
+        </div>
+        <p style="margin-top: 0.5rem;">Select one player to add to your squad. (Only players fitting empty slots are
+          shown)</p>
+
         <div class="player-list">
-          <div class="player-list-item" 
-               *ngFor="let player of currentSpunEra.players" 
-               [class.disabled]="!isPlayerAvailable(player)"
-               (click)="selectPlayer(player)">
+          <div class="player-list-item" *ngFor="let player of currentSpunEra.players"
+            [class.disabled]="!isPlayerAvailable(player)" (click)="selectPlayer(player)">
             <span class="p-pos">{{ player.position }}</span>
             <span class="p-name">{{ player.name }}</span>
             <span class="p-rat" [ngClass]="difficulty === 'EASY' ? getRatingClass(player.rating) : ''">
@@ -129,25 +129,25 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
 
   <!-- SIMULATION SCREEN -->
   <div *ngIf="gameState === 'SIMULATING'" class="sim-container">
     <div class="glass-panel sim-board">
-      
+
       <div class="sim-header">
         <div class="sim-title">LIVE MATCH SIMULATION</div>
         <div class="sim-time" [class.blink]="!simulationComplete">{{ currentMinute }}'</div>
-        
+
         <div class="sim-scorecard">
           <div class="sim-team">YOUR LEGENDS</div>
           <div class="sim-score">{{ playerScore }} - {{ oppScore }}</div>
           <div class="sim-team">OPPOSITION</div>
         </div>
       </div>
-      
+
       <div class="sim-events">
         <div class="event-item fade-in-up" *ngFor="let ev of liveEvents" [ngClass]="ev.type.toLowerCase()">
           <span class="e-min">{{ ev.minute }}'</span>
@@ -158,7 +158,7 @@
           <span class="e-text">{{ ev.text }}</span>
         </div>
       </div>
-      
+
       <div class="sim-actions" *ngIf="simulationComplete">
         <button class="btn-primary" (click)="viewResult()">VIEW FULL TIME RESULT</button>
       </div>
@@ -168,22 +168,22 @@
 
   <!-- RESULT SCREEN -->
   <div *ngIf="gameState === 'RESULT'" class="result-container">
-    
+
     <div id="shareable-result" class="glass-panel result-screen">
       <div class="result-header">
         <div class="match-context">4-1 DOWN &middot; FINAL SCORE</div>
-        <h1 class="score-display" 
-            [class.win]="(playerScore > oppScore) || (playerScore === oppScore && playerPenalties > oppPenalties)" 
-            [class.draw]="playerScore === oppScore && !wentToPenalties" 
-            [class.loss]="(playerScore < oppScore) || (playerScore === oppScore && playerPenalties < oppPenalties)">
+        <h1 class="score-display"
+          [class.win]="(playerScore > oppScore) || (playerScore === oppScore && playerPenalties > oppPenalties)"
+          [class.draw]="playerScore === oppScore && !wentToPenalties"
+          [class.loss]="(playerScore < oppScore) || (playerScore === oppScore && playerPenalties < oppPenalties)">
           <span *ngIf="wentToPenalties" class="pen-score">({{playerPenalties}}) </span>
           {{ matchScore }}
           <span *ngIf="wentToPenalties" class="pen-score"> ({{oppPenalties}})</span>
         </h1>
         <div class="match-time">
-           <span *ngIf="!wentToExtraTime">90 MINUTES</span>
-           <span *ngIf="wentToExtraTime && !wentToPenalties">120 MINUTES (AET)</span>
-           <span *ngIf="wentToPenalties">WON ON PENALTIES</span>
+          <span *ngIf="!wentToExtraTime">90 MINUTES</span>
+          <span *ngIf="wentToExtraTime && !wentToPenalties">120 MINUTES (AET)</span>
+          <span *ngIf="wentToPenalties">WON ON PENALTIES</span>
         </div>
         <h2 class="result-title">{{ resultMessage }}</h2>
         <h3 class="result-analysis">{{ teamAnalysis }}</h3>
@@ -191,7 +191,7 @@
 
       <div class="result-body">
         <div class="result-left" *ngIf="!isSharing">
-          
+
           <div class="broadcast-scorers" *ngIf="getScorersAndAssisters().length > 0">
             <div class="b-row" *ngFor="let stat of getScorersAndAssisters()">
               <span class="b-name">{{ stat.name }}</span>
@@ -212,17 +212,18 @@
               </div>
             </div>
           </div>
-          
+
           <div class="team-analysis glass-panel">
             <h3>TEAM ANALYSIS</h3>
             <p><span class="indicator">&#9656;</span> {{ teamAnalysis }}</p>
-            
+
             <div class="motm-section" *ngIf="motm">
               <h4>
                 <span class="text-gold">MAN OF THE MATCH:</span> {{ motm.name }}
                 <span *ngIf="difficulty === 'EASY'">(OVR {{ motm.rating }})</span>
               </h4>
-              <p class="motm-sub">The standout performer of the match based on goal contributions and overall impact.</p>
+              <p class="motm-sub">The standout performer of the match based on goal contributions and overall impact.
+              </p>
             </div>
           </div>
         </div>
@@ -234,7 +235,8 @@
               <div class="position-badge" *ngIf="slot.player">{{ slot.position }}</div>
               <div class="player-card filled result-card">
                 <div class="player-info">
-                  <span class="player-rating" [ngClass]="difficulty === 'EASY' ? getRatingClass(slot.player?.rating) : ''">
+                  <span class="player-rating"
+                    [ngClass]="difficulty === 'EASY' ? getRatingClass(slot.player?.rating) : ''">
                     {{ difficulty === 'EASY' ? slot.player?.rating : '' }}
                   </span>
                   <span class="player-name">{{ slot.player?.name }}</span>
@@ -245,7 +247,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="action-buttons">
       <button class="btn-primary share-btn" (click)="shareSquad()">SHARE SQUAD</button>
       <button class="btn-secondary" (click)="restart()">PLAY AGAIN</button>
@@ -285,3 +287,13 @@
     </form>
   </div>
 </div>
+  <div class="disclaimer-section">
+    <button class="disclaimer-toggle" (click)="toggleDisclaimer()">
+      DISCLAIMER <span class="arrow" [class.open]="showDisclaimer">&#9652;</span>
+    </button>
+    <div class="disclaimer-content fade-in-up" *ngIf="showDisclaimer">
+      <p>Ultimate Football Squad is an independent fan-made prototype. Not affiliated with any football association,
+        competition or player. Names and ratings are this game's own editorial interpretation, used descriptively.</p>
+    </div>
+  </div>
+</main>
