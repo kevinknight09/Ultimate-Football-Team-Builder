@@ -283,7 +283,7 @@
         <button class="btn-primary" (click)="closeFeedbackModal()" style="margin-top: 25px; width: 100%;">Close</button>
       </div>
 
-      <form *ngIf="!feedbackSuccess" name="feedback" data-netlify="true" (ngSubmit)="submitFeedback($event)">
+      <form *ngIf="!feedbackSuccess" name="feedback" method="POST" data-netlify="true" (submit)="submitFeedback($event)">
         <input type="hidden" name="form-name" value="feedback" />
         <div class="form-group">
           <label for="f-name">Name</label>

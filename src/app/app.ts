@@ -648,7 +648,7 @@ export class App implements OnInit {
     data.append('name', nameInput?.value || 'Anonymous');
     data.append('message', msgInput?.value || '');
 
-    fetch('/', {
+    fetch('/index.html', {
       method: 'POST',
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: data.toString()
