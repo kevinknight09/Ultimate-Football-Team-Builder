@@ -8,6 +8,12 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
+    <!-- A hidden form for Netlify bots to parse during deployment -->
+    <form name="feedback" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <textarea name="message"></textarea>
+    </form>
+
     <app-root></app-root>
   </body>
 </html>
