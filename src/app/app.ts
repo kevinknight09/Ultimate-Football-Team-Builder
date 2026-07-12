@@ -28,6 +28,7 @@ export class App implements OnInit {
   difficulty: 'EASY' | 'HARD' = 'EASY';
   
   dataService = inject(PlayerDataService);
+  cdr = inject(ChangeDetectorRef);
   eras: Era[] = [];
   
   // 4-3-3 Formation Positions with XY coordinates (%)
@@ -138,7 +139,7 @@ export class App implements OnInit {
     this.stopCrowd();
   }
 
-  cdr = inject(ChangeDetectorRef);
+
 
   initAudio() {
     if (!this.audioCtx) {
@@ -658,9 +659,11 @@ export class App implements OnInit {
       }
       this.submittingFeedback = false;
       this.feedbackSuccess = true;
+      this.cdr.detectChanges();
     }).catch(error => {
       console.error('Error submitting feedback', error);
       this.submittingFeedback = false;
+      this.cdr.detectChanges();
       alert('Failed to submit feedback. Please try again later.');
     });
   }
