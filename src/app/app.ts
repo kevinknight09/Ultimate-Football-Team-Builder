@@ -658,6 +658,8 @@ export class App implements OnInit {
       this.submittingFeedback = false;
       alert('Failed to submit feedback. Please try again later.');
     });
+  }
+
   toggleDisclaimer() {
     this.showDisclaimer = !this.showDisclaimer;
   }

@@ -936,12 +936,21 @@
 /* FOOTER STYLES */
 .app-footer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  padding: 30px 0;
-  margin-top: 40px;
+  gap: 15px;
+  padding: 20px 0;
+  margin-top: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer-btn {
@@ -1048,38 +1057,16 @@
   font-size: 3rem;
   color: var(--success);
   margin-bottom: 15px;
-/* DISCLAIMER SECTION */
-.disclaimer-section {
-  margin-top: 50px;
-  padding-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
 }
 
-.disclaimer-toggle {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-secondary);
-  padding: 10px 40px;
-  border-radius: 6px;
-  font-family: 'Outfit', sans-serif;
+/* DISCLAIMER SECTION (now in footer) */
+.disclaimer-content {
+  max-width: 600px;
+  text-align: center;
   font-size: 0.8rem;
-  letter-spacing: 2px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.disclaimer-toggle:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.4;
+  padding: 0 20px;
 }
 
 .disclaimer-toggle .arrow {
